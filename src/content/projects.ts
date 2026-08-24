@@ -55,10 +55,10 @@ export const PROJECTS: Project[] = [
         url: "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres/",
       },
     ],
-    image: "https://picsum.photos/seed/lyon-immeubles-pierre/1200/800",
+    image: "/images/projet-immobilier.webp",
     imageAlt: {
-      fr: "Façades d'immeubles anciens à Lyon",
-      en: "Facades of old apartment buildings in Lyon",
+      fr: "Toits de Lyon à l'heure bleue, la colline de Fourvière en arrière-plan",
+      en: "Lyon rooftops at blue hour, with the Fourvière hill behind",
     },
     copy: {
       fr: {
@@ -101,10 +101,10 @@ export const PROJECTS: Project[] = [
         url: "https://meteo.data.gouv.fr/",
       },
     ],
-    image: "https://picsum.photos/seed/lignes-haute-tension-hiver/1200/800",
+    image: "/images/projet-electricite.webp",
     imageAlt: {
-      fr: "Lignes à haute tension en hiver",
-      en: "High voltage power lines in winter",
+      fr: "Pylônes à haute tension traversant une plaine gelée en hiver",
+      en: "High voltage pylons crossing a frozen plain in winter",
     },
     copy: {
       fr: {
@@ -146,10 +146,10 @@ export const PROJECTS: Project[] = [
         url: "https://www.atmo-auvergnerhonealpes.fr/",
       },
     ],
-    image: "https://picsum.photos/seed/brume-vallee-rhone-aube/1200/800",
+    image: "/images/projet-air.webp",
     imageAlt: {
-      fr: "Brume matinale dans la vallée du Rhône",
-      en: "Morning haze over the Rhône valley",
+      fr: "Nappe de pollution piégée au-dessus d'une vallée industrielle en hiver",
+      en: "Layer of pollution trapped over an industrial valley in winter",
     },
     copy: {
       fr: {

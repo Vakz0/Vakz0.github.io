@@ -66,7 +66,8 @@ const fr: Dictionary = {
       "Je construis des analyses de bout en bout sur des données publiques françaises : immobilier, énergie, qualité de l'air.",
     primaryCta: "Voir les projets",
     secondaryCta: "Me contacter",
-    portraitAlt: "Infrastructure technique photographiée de nuit",
+    portraitAlt:
+      "Vue aérienne nocturne d'une ville dense, les rues dessinant un réseau de lumières",
   },
   projects: {
     heading: "Trois analyses en construction",
@@ -155,7 +156,8 @@ const en: Dictionary = {
       "I build end to end analyses on French open data: housing, energy and air quality.",
     primaryCta: "See the projects",
     secondaryCta: "Get in touch",
-    portraitAlt: "Technical infrastructure photographed at night",
+    portraitAlt:
+      "Aerial night view of a dense city, its streets forming a network of lights",
   },
   projects: {
     heading: "Three analyses in progress",

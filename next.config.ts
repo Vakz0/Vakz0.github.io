@@ -5,11 +5,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "export",
   trailingSlash: true,
-  images: {
-    // L'export statique n'a pas de serveur pour optimiser les images.
-    unoptimized: true,
-    remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }],
-  },
+  // L'export statique n'a pas de serveur pour optimiser les images :
+  // elles sont pré-converties en WebP par scripts/optimize-images.mjs.
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

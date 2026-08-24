@@ -130,7 +130,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
       >
         <div className="relative aspect-square overflow-hidden rounded-base border border-line bg-canvas-alt">
           <Image
-            src="https://picsum.photos/seed/reseau-nuit-longue-exposition/1000/1000"
+            src="/images/hero-reseau.webp"
             alt={dict.hero.portraitAlt}
             fill
             priority

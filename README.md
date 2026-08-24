@@ -19,6 +19,11 @@ npm run build   # export statique dans ./out
 npm run lint
 ```
 
+Pour ajouter une image : dépose le PNG ou le JPEG dans `public/images`, puis lance
+`npm run images`. Le script le redimensionne, le convertit en WebP et supprime la
+source. Sans cette étape, une image de plusieurs mégaoctets serait servie telle
+quelle, puisque l'export statique n'optimise rien à la volée.
+
 L'export statique n'a pas de serveur : pas de route API, pas de middleware,
 et les images sont servies sans optimisation Next.
 
