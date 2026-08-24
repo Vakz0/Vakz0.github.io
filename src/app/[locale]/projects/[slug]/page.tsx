@@ -157,6 +157,17 @@ export default async function ProjectPage({
 
         <article className="lg:col-span-8">
           <div className="space-y-12">
+            {copy.answer ? (
+              <Reveal>
+                <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
+                  {dict.detail.answer}
+                </h2>
+                <p className="mt-4 max-w-[68ch] rounded-base border border-accent/30 bg-accent/5 px-5 py-4 text-[17px] leading-relaxed text-fg">
+                  {copy.answer}
+                </p>
+              </Reveal>
+            ) : null}
+
             {sections.map((section, index) => (
               <Reveal key={section.label} delay={index * 0.05}>
                 <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
@@ -189,6 +200,33 @@ export default async function ProjectPage({
                 </p>
               )}
             </Reveal>
+
+            {project.figures && project.figures.length > 0 ? (
+              <Reveal>
+                <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
+                  {dict.detail.visuals}
+                </h2>
+                <div className="mt-6 space-y-10">
+                  {project.figures.map((figure) => (
+                    <figure key={figure.src} className="overflow-hidden">
+                      <div className="relative overflow-hidden rounded-base border border-line bg-white">
+                        <Image
+                          src={figure.src}
+                          alt={figure.caption[typed]}
+                          width={1200}
+                          height={675}
+                          className="h-auto w-full"
+                          sizes="(max-width: 1024px) 100vw, 68vw"
+                        />
+                      </div>
+                      <figcaption className="mt-3 max-w-[68ch] text-[15px] leading-relaxed text-fg-soft">
+                        {figure.caption[typed]}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </Reveal>
+            ) : null}
 
             <Reveal>
               <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">

@@ -26,10 +26,12 @@ export interface Dictionary {
   };
   detail: {
     question: string;
+    answer: string;
     data: string;
     method: string;
     findings: string;
     findingsPending: string;
+    visuals: string;
     limits: string;
     tools: string;
     sources: string;
@@ -84,11 +86,13 @@ const fr: Dictionary = {
   },
   detail: {
     question: "La question",
+    answer: "En bref",
     data: "Les données",
     method: "La méthode",
     findings: "Les résultats",
     findingsPending:
       "L'analyse est en cours. Les résultats seront publiés ici quand ils seront solides, pas avant.",
+    visuals: "Graphiques",
     limits: "Les limites",
     tools: "Outils",
     sources: "Sources",
@@ -174,11 +178,13 @@ const en: Dictionary = {
   },
   detail: {
     question: "The question",
+    answer: "In short",
     data: "The data",
     method: "The method",
     findings: "The findings",
     findingsPending:
       "The analysis is still running. Results will be published here once they hold up, and not before.",
+    visuals: "Charts",
     limits: "The limits",
     tools: "Tools",
     sources: "Sources",

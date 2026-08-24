@@ -12,6 +12,8 @@ export interface ProjectCopy {
   title: string;
   /** Résumé d'une phrase affiché dans l'index. */
   summary: string;
+  /** Réponse en langage clair à la question (encadré en tête de fiche). */
+  answer?: string;
   /** La question métier ou scientifique à laquelle le projet répond. */
   question: string;
   /** Origine des données, volume, et ce qui est sale dedans. */
@@ -29,6 +31,11 @@ export interface ProjectSource {
   url: string;
 }
 
+export interface ProjectFigure {
+  src: string;
+  caption: Record<Locale, string>;
+}
+
 export interface Project {
   slug: string;
   status: ProjectStatus;
@@ -40,6 +47,8 @@ export interface Project {
   demo?: string;
   image: string;
   imageAlt: Record<Locale, string>;
+  /** Graphiques de restitution (optionnel, affichés en galerie). */
+  figures?: ProjectFigure[];
   copy: Record<Locale, ProjectCopy>;
 }
 
@@ -156,40 +165,97 @@ export const PROJECTS: Project[] = [
       fr: "Nappe de pollution piégée au-dessus d'une vallée industrielle en hiver",
       en: "Layer of pollution trapped over an industrial valley in winter",
     },
+    figures: [
+      {
+        src: "/images/projects/air/00_tableau_de_bord.png",
+        caption: {
+          fr: "Vue d'ensemble : 157 000 heures analysées, pics hivernaux, effet inversion +62 %, météo > calendrier.",
+          en: "Overview: 157k hours analysed, winter peaks, +62% inversion effect, weather > calendar.",
+        },
+      },
+      {
+        src: "/images/projects/air/01_saisonnalite_journaliere.png",
+        caption: {
+          fr: "PM2.5 journalier sur un an — les pics arrivent en hiver, quand les inversions piègent la pollution.",
+          en: "Daily PM2.5 over one year — peaks occur in winter when inversions trap pollution.",
+        },
+      },
+      {
+        src: "/images/projects/air/02_profil_horaire_trafic.png",
+        caption: {
+          fr: "Profil horaire en semaine vs week-end — double bosse matin (7h–9h) et soir (17h–19h), signature du trafic.",
+          en: "Hourly profile weekday vs weekend — morning (7–9am) and evening (5–7pm) peaks, traffic signature.",
+        },
+      },
+      {
+        src: "/images/projects/air/03_effet_inversion.png",
+        caption: {
+          fr: "Quand il fait froid et qu'il ne vente presque pas (< 2 m/s), le PM2.5 moyen augmente de 62 %.",
+          en: "When it's cold and nearly windless (< 2 m/s), average PM2.5 rises by 62%.",
+        },
+      },
+      {
+        src: "/images/projects/air/04_meteo_vs_pm25.png",
+        caption: {
+          fr: "Plus froid = plus de particules (r = −0,30). Vent fort = dispersion (r = −0,17).",
+          en: "Colder = more particles (r = −0.30). Strong wind = dispersion (r = −0.17).",
+        },
+      },
+      {
+        src: "/images/projects/air/06_comparaison_modeles.png",
+        caption: {
+          fr: "Modèle prédictif : la météo seule (R² = 19 %) bat le calendrier seul (R² = 15 %).",
+          en: "Predictive model: weather alone (R² = 19%) beats calendar alone (R² = 15%).",
+        },
+      },
+      {
+        src: "/images/projects/air/07_importance_blocs.png",
+        caption: {
+          fr: "Importance relative : météo >> station >> calendrier quand on mélange les variables du modèle.",
+          en: "Relative importance: weather >> station >> calendar when model variables are shuffled.",
+        },
+      },
+    ],
     copy: {
       fr: {
         title: "Qualité de l'air en Auvergne-Rhône-Alpes",
         summary:
-          "Séparer ce qui relève de la météo et ce qui relève de l'activité humaine.",
+          "157 000 heures de mesures : la météo explique les pics de pollution mieux que le trafic.",
+        answer:
+          "Quand il fait froid et qu'il ne vente pas, la pollution reste piégée dans la vallée du Rhône (+62 % de PM2.5). Le trafic laisse une trace (double bosse matin/soir), mais c'est surtout la météo — inversions thermiques en hiver — qui pilote les concentrations.",
         question:
           "Les pics de particules fines dans la vallée du Rhône s'expliquent-ils davantage par les conditions météo que par l'activité humaine ?",
-        data: "Mesures horaires PM2.5 de 19 stations vallée du Rhône (Atmo AURA, historique figé juil. 2022 → juil. 2023), croisées avec température, vent et humidité Open-Meteo ERA5 aux coordonnées des stations.",
+        data: "19 stations Atmo AURA dans la vallée du Rhône (Rhône, Isère, Drôme, Ardèche, Loire), mesures horaires PM2.5 sur un an (juil. 2022 → juil. 2023). Croisement avec température, vent et humidité Open-Meteo ERA5 aux coordonnées exactes de chaque station. Total : 157 000 heures exploitables.",
         method:
-          "Exploration Atmo, jointure horaire avec la météo, proxy d'inversion (froid + vent faible), puis régression Ridge comparant blocs calendrier (heure, week-end, fériés) et météo, avec effets par station.",
+          "1) Explorer les données Atmo (saisonnalité, profil horaire, stations). 2) Télécharger la météo Open-Meteo et joindre heure par heure. 3) Tester un proxy d'inversion (froid + vent < 2 m/s). 4) Comparer deux blocs explicatifs par régression Ridge : calendrier (heure, week-end, fériés) vs météo (température, vent, humidité), avec un effet par station.",
         findings: [
-          "157 000 heures jointes : la météo seule explique plus de variance que le calendrier (R² holdout ~0,19 vs ~0,15).",
-          "Proxy inversion (froid + vent < 2 m/s) : PM2.5 +62 % en moyenne vs les autres heures.",
-          "Corrélations : température −0,30, vent −0,17 ; double bosse horaire en semaine compatible avec le trafic, mais effet secondaire face à la météo.",
+          "Saisonnalité marquée : les pics de PM2.5 arrivent en hiver (fév.–mars 2023), quand les inversions thermiques emprisonnent les particules sous une couche d'air chaud.",
+          "Effet inversion mesurable : froid + vent faible → PM2.5 moyen +62 % (de ~7,5 à ~12 µg/m³). Corrélations : température −0,30, vent −0,17.",
+          "Signal trafic visible mais secondaire : double bosse horaire en semaine (7h–9h et 17h–19h), absente le week-end. Mais la météo seule explique 19 % de variance vs 15 % pour le calendrier seul.",
+          "Verdict du modèle : météo > calendrier. Ajouter le trafic (via calendrier) au modèle météo n'apporte que +1,5 point de R².",
         ],
         limits:
-          "Corrélation ≠ causalité. Pas de trafic horaire : le calendrier reste un proxy grossier. ERA5 lisse les microclimats de vallée. Historique Atmo figé, pas un suivi temps réel. Modèle linéaire simple (R² ~0,20), pas une prévision opérationnelle.",
+          "Corrélation ≠ causalité. Pas de données de trafic horaire : le calendrier est un proxy grossier. La météo ERA5 (~9–25 km) lisse les microclimats de vallée. Historique Atmo figé, pas un suivi temps réel. Modèle linéaire simple (R² ~20 %), pas une prévision opérationnelle.",
       },
       en: {
         title: "Air quality in Auvergne-Rhône-Alpes",
         summary:
-          "Separating what comes from the weather and what comes from human activity.",
+          "157,000 hours of readings: weather explains pollution peaks better than traffic.",
+        answer:
+          "When it's cold and windless, pollution stays trapped in the Rhône valley (+62% PM2.5). Traffic leaves a trace (morning/evening double peak), but weather — thermal inversions in winter — mainly drives concentrations.",
         question:
           "Are fine particle peaks in the Rhône valley driven more by weather conditions than by human activity?",
-        data: "Hourly PM2.5 from 19 Rhône valley stations (Atmo AURA, fixed history Jul. 2022 → Jul. 2023), joined with Open-Meteo ERA5 temperature, wind and humidity at station coordinates.",
+        data: "19 Atmo AURA stations in the Rhône valley (Rhône, Isère, Drôme, Ardèche, Loire), hourly PM2.5 over one year (Jul. 2022 → Jul. 2023). Joined with Open-Meteo ERA5 temperature, wind and humidity at each station's coordinates. Total: 157,000 usable hours.",
         method:
-          "Atmo exploration, hourly join with weather, inversion proxy (cold + low wind), then Ridge regression comparing calendar blocks (hour, weekend, holidays) vs weather, with station fixed effects.",
+          "1) Explore Atmo data (seasonality, hourly profile, stations). 2) Download Open-Meteo weather and join hour-by-hour. 3) Test an inversion proxy (cold + wind < 2 m/s). 4) Compare two explanatory blocks via Ridge regression: calendar (hour, weekend, holidays) vs weather (temperature, wind, humidity), with station fixed effects.",
         findings: [
-          "~157k joined hours: weather alone explains more variance than the calendar (holdout R² ~0.19 vs ~0.15).",
-          "Inversion proxy (cold + wind < 2 m/s): PM2.5 +62% on average vs other hours.",
-          "Correlations: temperature −0.30, wind −0.17; weekday double peak compatible with traffic, but secondary to weather.",
+          "Marked seasonality: PM2.5 peaks occur in winter (Feb–Mar 2023), when thermal inversions trap particles under a warm air layer.",
+          "Measurable inversion effect: cold + low wind → average PM2.5 +62% (~7.5 to ~12 µg/m³). Correlations: temperature −0.30, wind −0.17.",
+          "Traffic signal visible but secondary: weekday double peak (7–9am and 5–7pm), absent on weekends. But weather alone explains 19% of variance vs 15% for calendar alone.",
+          "Model verdict: weather > calendar. Adding traffic (via calendar) to the weather model only adds +1.5 R² points.",
         ],
         limits:
-          "Correlation is not causation. No hourly traffic data: calendar remains a coarse proxy. ERA5 smooths valley microclimates. Fixed Atmo history, not live monitoring. Simple linear model (R² ~0.20), not operational forecasting.",
+          "Correlation is not causation. No hourly traffic data: calendar is a coarse proxy. ERA5 weather (~9–25 km) smooths valley microclimates. Fixed Atmo history, not live monitoring. Simple linear model (R² ~20%), not operational forecasting.",
       },
     },
   },
