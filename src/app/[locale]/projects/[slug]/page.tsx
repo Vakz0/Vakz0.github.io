@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { ProjectHighlights } from "@/components/ProjectHighlights";
+import { VisualsCta } from "@/components/ProjectVisuals";
 import { Reveal } from "@/components/Reveal";
 import { getDictionary } from "@/content/i18n";
 import { PROJECTS, getProject } from "@/content/projects";
@@ -98,7 +100,6 @@ export default async function ProjectPage({
       </Reveal>
 
       <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
-        {/* Métadonnées à gauche, récit à droite. */}
         <aside className="lg:col-span-4">
           <div className="lg:sticky lg:top-[92px]">
             <dl className="divide-y divide-line border-y border-line">
@@ -151,6 +152,21 @@ export default async function ProjectPage({
                   </dd>
                 </div>
               ) : null}
+              {project.figures?.length ? (
+                <div className="py-5">
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-fg-soft">
+                    {dict.detail.visuals}
+                  </dt>
+                  <dd className="mt-2">
+                    <Link
+                      href={`/${typed}/projects/${slug}/visualisations/`}
+                      className="text-[15px] text-fg transition-colors hover:text-accent"
+                    >
+                      {dict.visuals.ctaButton} ({project.figures.length})
+                    </Link>
+                  </dd>
+                </div>
+              ) : null}
             </dl>
           </div>
         </aside>
@@ -168,12 +184,26 @@ export default async function ProjectPage({
               </Reveal>
             ) : null}
 
+            {project.highlights ? (
+              <Reveal delay={0.03}>
+                <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
+                  {dict.detail.keyNumbers}
+                </h2>
+                <div className="mt-4">
+                  <ProjectHighlights
+                    highlights={project.highlights}
+                    locale={typed}
+                  />
+                </div>
+              </Reveal>
+            ) : null}
+
             {sections.map((section, index) => (
               <Reveal key={section.label} delay={index * 0.05}>
                 <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
                   {section.label}
                 </h2>
-                <p className="mt-4 max-w-[68ch] text-[17px] leading-relaxed text-fg-soft">
+                <p className="mt-4 max-w-[68ch] whitespace-pre-line text-[17px] leading-relaxed text-fg-soft">
                   {section.body}
                 </p>
               </Reveal>
@@ -184,12 +214,15 @@ export default async function ProjectPage({
                 {dict.detail.findings}
               </h2>
               {copy.findings.length > 0 ? (
-                <ul className="mt-4 space-y-3">
-                  {copy.findings.map((finding) => (
+                <ul className="mt-4 space-y-4">
+                  {copy.findings.map((finding, index) => (
                     <li
                       key={finding.slice(0, 32)}
-                      className="max-w-[68ch] border-l border-line pl-4 text-[17px] leading-relaxed text-fg-soft"
+                      className="max-w-[68ch] border-l-2 border-accent/40 pl-4 text-[17px] leading-relaxed text-fg-soft"
                     >
+                      <span className="mr-2 font-mono text-[12px] text-accent">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
                       {finding}
                     </li>
                   ))}
@@ -201,29 +234,13 @@ export default async function ProjectPage({
               )}
             </Reveal>
 
-            {project.figures && project.figures.length > 0 ? (
+            {project.figures?.length ? (
               <Reveal>
                 <h2 className="font-mono text-[13px] uppercase tracking-[0.14em] text-accent">
                   {dict.detail.visuals}
                 </h2>
-                <div className="mt-6 space-y-10">
-                  {project.figures.map((figure) => (
-                    <figure key={figure.src} className="overflow-hidden">
-                      <div className="relative overflow-hidden rounded-base border border-line bg-white">
-                        <Image
-                          src={figure.src}
-                          alt={figure.caption[typed]}
-                          width={1200}
-                          height={675}
-                          className="h-auto w-full"
-                          sizes="(max-width: 1024px) 100vw, 68vw"
-                        />
-                      </div>
-                      <figcaption className="mt-3 max-w-[68ch] text-[15px] leading-relaxed text-fg-soft">
-                        {figure.caption[typed]}
-                      </figcaption>
-                    </figure>
-                  ))}
+                <div className="mt-5">
+                  <VisualsCta project={project} locale={typed} dict={dict} />
                 </div>
               </Reveal>
             ) : null}

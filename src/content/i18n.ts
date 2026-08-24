@@ -31,11 +31,28 @@ export interface Dictionary {
     method: string;
     findings: string;
     findingsPending: string;
+    keyNumbers: string;
     visuals: string;
     limits: string;
     tools: string;
     sources: string;
     repo: string;
+  };
+  visuals: {
+    pageTitle: string;
+    pageEyebrow: string;
+    backToProject: string;
+    ctaEyebrow: string;
+    ctaTitle: string;
+    ctaFallback: string;
+    ctaButton: string;
+    indexLink: string;
+    sections: {
+      overview: string;
+      traffic: string;
+      weather: string;
+      model: string;
+    };
   };
   skills: {
     heading: string;
@@ -92,11 +109,29 @@ const fr: Dictionary = {
     findings: "Les résultats",
     findingsPending:
       "L'analyse est en cours. Les résultats seront publiés ici quand ils seront solides, pas avant.",
-    visuals: "Graphiques",
+    keyNumbers: "Chiffres clés",
+    visuals: "Visualisations",
     limits: "Les limites",
     tools: "Outils",
     sources: "Sources",
     repo: "Code source",
+  },
+  visuals: {
+    pageTitle: "Visualisations",
+    pageEyebrow: "Graphiques commentés",
+    backToProject: "Retour à la fiche projet",
+    ctaEyebrow: "Analyse détaillée",
+    ctaTitle: "Voir les {n} graphiques de l'analyse",
+    ctaFallback:
+      "Graphiques annotés qui détaillent chaque étape : données, météo, trafic, modèle.",
+    ctaButton: "Ouvrir la galerie",
+    indexLink: "Graphiques",
+    sections: {
+      overview: "Contexte — où et quand",
+      traffic: "Activité humaine — signal trafic",
+      weather: "Météo — inversions et corrélations",
+      model: "Modèle — météo vs calendrier",
+    },
   },
   skills: {
     heading: "Ce que je sais faire",
@@ -184,11 +219,29 @@ const en: Dictionary = {
     findings: "The findings",
     findingsPending:
       "The analysis is still running. Results will be published here once they hold up, and not before.",
-    visuals: "Charts",
+    keyNumbers: "Key numbers",
+    visuals: "Visualisations",
     limits: "The limits",
     tools: "Tools",
     sources: "Sources",
     repo: "Source code",
+  },
+  visuals: {
+    pageTitle: "Visualisations",
+    pageEyebrow: "Annotated charts",
+    backToProject: "Back to project page",
+    ctaEyebrow: "Detailed analysis",
+    ctaTitle: "View all {n} analysis charts",
+    ctaFallback:
+      "Annotated charts covering each step: data, weather, traffic, model.",
+    ctaButton: "Open gallery",
+    indexLink: "Charts",
+    sections: {
+      overview: "Context — where and when",
+      traffic: "Human activity — traffic signal",
+      weather: "Weather — inversions and correlations",
+      model: "Model — weather vs calendar",
+    },
   },
   skills: {
     heading: "What I can do",

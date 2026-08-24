@@ -33,7 +33,22 @@ export interface ProjectSource {
 
 export interface ProjectFigure {
   src: string;
+  title: Record<Locale, string>;
   caption: Record<Locale, string>;
+  /** Regroupe les graphiques sur la page visualisations. */
+  section: "overview" | "traffic" | "weather" | "model";
+}
+
+export interface ProjectHighlight {
+  value: string;
+  label: Record<Locale, string>;
+}
+
+export interface ProjectVisuals {
+  intro: Record<Locale, string>;
+  sectionIntros: Partial<
+    Record<"overview" | "traffic" | "weather" | "model", Record<Locale, string>>
+  >;
 }
 
 export interface Project {
@@ -47,8 +62,12 @@ export interface Project {
   demo?: string;
   image: string;
   imageAlt: Record<Locale, string>;
-  /** Graphiques de restitution (optionnel, affichés en galerie). */
+  /** Graphiques de restitution (page dédiée + aperçu sur la fiche). */
   figures?: ProjectFigure[];
+  /** Chiffres clés affichés en cartes sur la fiche projet. */
+  highlights?: ProjectHighlight[];
+  /** Textes de la page visualisations. */
+  visuals?: ProjectVisuals;
   copy: Record<Locale, ProjectCopy>;
 }
 
@@ -168,6 +187,11 @@ export const PROJECTS: Project[] = [
     figures: [
       {
         src: "/images/projects/air/00_tableau_de_bord.png",
+        section: "overview",
+        title: {
+          fr: "Tableau de bord",
+          en: "Dashboard",
+        },
         caption: {
           fr: "Vue d'ensemble : 157 000 heures analysées, pics hivernaux, effet inversion +62 %, météo > calendrier.",
           en: "Overview: 157k hours analysed, winter peaks, +62% inversion effect, weather > calendar.",
@@ -175,47 +199,131 @@ export const PROJECTS: Project[] = [
       },
       {
         src: "/images/projects/air/01_saisonnalite_journaliere.png",
+        section: "overview",
+        title: {
+          fr: "Saisonnalité journalière",
+          en: "Daily seasonality",
+        },
         caption: {
-          fr: "PM2.5 journalier sur un an — les pics arrivent en hiver, quand les inversions piègent la pollution.",
-          en: "Daily PM2.5 over one year — peaks occur in winter when inversions trap pollution.",
+          fr: "PM2.5 journalier sur un an — les pics arrivent en hiver, quand les inversions piègent la pollution sous une couche d'air chaud.",
+          en: "Daily PM2.5 over one year — peaks occur in winter when inversions trap pollution under a warm air layer.",
         },
       },
       {
         src: "/images/projects/air/02_profil_horaire_trafic.png",
+        section: "traffic",
+        title: {
+          fr: "Profil horaire — signature trafic",
+          en: "Hourly profile — traffic signature",
+        },
         caption: {
-          fr: "Profil horaire en semaine vs week-end — double bosse matin (7h–9h) et soir (17h–19h), signature du trafic.",
-          en: "Hourly profile weekday vs weekend — morning (7–9am) and evening (5–7pm) peaks, traffic signature.",
+          fr: "En semaine : double bosse matin (7h–9h) et soir (17h–19h). Le week-end, le profil s'aplatit — preuve d'un effet activité humaine, mais plus faible que la météo.",
+          en: "On weekdays: morning (7–9am) and evening (5–7pm) double peak. Weekends flatten out — evidence of human activity, but weaker than weather.",
         },
       },
       {
         src: "/images/projects/air/03_effet_inversion.png",
+        section: "weather",
+        title: {
+          fr: "Effet des inversions thermiques",
+          en: "Thermal inversion effect",
+        },
         caption: {
-          fr: "Quand il fait froid et qu'il ne vente presque pas (< 2 m/s), le PM2.5 moyen augmente de 62 %.",
-          en: "When it's cold and nearly windless (< 2 m/s), average PM2.5 rises by 62%.",
+          fr: "Quand il fait froid et qu'il ne vente presque pas (< 2 m/s), le PM2.5 moyen passe de ~7,5 à ~12 µg/m³ (+62 %).",
+          en: "When it's cold and nearly windless (< 2 m/s), average PM2.5 rises from ~7.5 to ~12 µg/m³ (+62%).",
         },
       },
       {
         src: "/images/projects/air/04_meteo_vs_pm25.png",
+        section: "weather",
+        title: {
+          fr: "Température et vent vs PM2.5",
+          en: "Temperature and wind vs PM2.5",
+        },
         caption: {
-          fr: "Plus froid = plus de particules (r = −0,30). Vent fort = dispersion (r = −0,17).",
-          en: "Colder = more particles (r = −0.30). Strong wind = dispersion (r = −0.17).",
+          fr: "Nuages de points : plus froid = plus de particules (r = −0,30). Vent fort = dispersion et dilution (r = −0,17).",
+          en: "Scatter density: colder = more particles (r = −0.30). Strong wind = dispersion (r = −0.17).",
+        },
+      },
+      {
+        src: "/images/projects/air/05_correlations_meteo.png",
+        section: "weather",
+        title: {
+          fr: "Corrélations météo",
+          en: "Weather correlations",
+        },
+        caption: {
+          fr: "La température est la variable météo la plus corrélée au PM2.5, devant le vent et l'humidité.",
+          en: "Temperature is the weather variable most correlated with PM2.5, ahead of wind and humidity.",
         },
       },
       {
         src: "/images/projects/air/06_comparaison_modeles.png",
+        section: "model",
+        title: {
+          fr: "Météo vs calendrier — qui explique le mieux ?",
+          en: "Weather vs calendar — which explains best?",
+        },
         caption: {
-          fr: "Modèle prédictif : la météo seule (R² = 19 %) bat le calendrier seul (R² = 15 %).",
-          en: "Predictive model: weather alone (R² = 19%) beats calendar alone (R² = 15%).",
+          fr: "Régression Ridge : la météo seule (R² = 19 %) bat le calendrier seul (R² = 15 %). Ensemble, les deux atteignent 20 %.",
+          en: "Ridge regression: weather alone (R² = 19%) beats calendar alone (R² = 15%). Combined, both reach 20%.",
         },
       },
       {
         src: "/images/projects/air/07_importance_blocs.png",
+        section: "model",
+        title: {
+          fr: "Importance relative des blocs",
+          en: "Relative block importance",
+        },
         caption: {
-          fr: "Importance relative : météo >> station >> calendrier quand on mélange les variables du modèle.",
-          en: "Relative importance: weather >> station >> calendar when model variables are shuffled.",
+          fr: "Permutation des variables : mélanger la météo détruit 3× plus de R² que mélanger le calendrier.",
+          en: "Variable permutation: shuffling weather destroys 3× more R² than shuffling the calendar.",
         },
       },
     ],
+    highlights: [
+      {
+        value: "157k",
+        label: { fr: "heures analysées", en: "hours analysed" },
+      },
+      {
+        value: "+62%",
+        label: { fr: "sous inversion thermique", en: "under thermal inversion" },
+      },
+      {
+        value: "19%",
+        label: { fr: "variance expliquée (météo)", en: "variance explained (weather)" },
+      },
+      {
+        value: "15%",
+        label: { fr: "variance expliquée (trafic proxy)", en: "variance explained (traffic proxy)" },
+      },
+    ],
+    visuals: {
+      intro: {
+        fr: "Huit graphiques qui racontent l'analyse pas à pas : d'abord le contexte (1 an, 19 stations), puis le signal trafic, l'effet météo, et le verdict du modèle. Chaque figure est annotée et commentée.",
+        en: "Eight charts walking through the analysis step by step: context first (1 year, 19 stations), then the traffic signal, weather effect, and model verdict. Each chart is annotated and explained.",
+      },
+      sectionIntros: {
+        overview: {
+          fr: "Où et quand la pollution monte : la vallée du Rhône concentre des pics nettement plus hauts en hiver.",
+          en: "Where and when pollution rises: the Rhône valley sees clearly higher peaks in winter.",
+        },
+        traffic: {
+          fr: "Le trafic laisse une empreinte horaire reconnaissable, mais elle reste secondaire face à la météo.",
+          en: "Traffic leaves a recognisable hourly footprint, but it remains secondary to weather.",
+        },
+        weather: {
+          fr: "Froid + vent faible = particules piégées. C'est le mécanisme principal des pics observés.",
+          en: "Cold + low wind = trapped particles. This is the main mechanism behind observed peaks.",
+        },
+        model: {
+          fr: "Comparaison quantitative : la météo bat le calendrier comme prédicteur du PM2.5 horaire.",
+          en: "Quantitative comparison: weather beats the calendar as an hourly PM2.5 predictor.",
+        },
+      },
+    },
     copy: {
       fr: {
         title: "Qualité de l'air en Auvergne-Rhône-Alpes",
