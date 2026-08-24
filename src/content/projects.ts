@@ -137,13 +137,17 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "qualite-air-aura",
-    status: "in-progress",
+    status: "published",
     year: "2026",
-    tools: ["Python", "pandas", "scikit-learn", "Power BI"],
+    tools: ["Python", "pandas", "scikit-learn", "matplotlib", "Open-Meteo"],
     sources: [
       {
         label: "Atmo Auvergne-Rhône-Alpes",
         url: "https://depot.atmo-aura.fr/mesures/horaires/",
+      },
+      {
+        label: "Open-Meteo (ERA5)",
+        url: "https://open-meteo.com/",
       },
     ],
     repo: "https://github.com/Vakz0/qualite-air-aura",
@@ -159,12 +163,16 @@ export const PROJECTS: Project[] = [
           "Séparer ce qui relève de la météo et ce qui relève de l'activité humaine.",
         question:
           "Les pics de particules fines dans la vallée du Rhône s'expliquent-ils davantage par les conditions météo que par l'activité humaine ?",
-        data: "Mesures horaires des stations Atmo Auvergne-Rhône-Alpes pour les particules PM10 et PM2.5, avec des capteurs en panne, des stations créées ou retirées en cours de série, et des conventions d'unité qui changent selon les années.",
+        data: "Mesures horaires PM2.5 de 19 stations vallée du Rhône (Atmo AURA, historique figé juil. 2022 → juil. 2023), croisées avec température, vent et humidité Open-Meteo ERA5 aux coordonnées des stations.",
         method:
-          "Reconstruction d'une série continue par station, traitement explicite des valeurs manquantes plutôt que suppression pure et simple, puis modèle qui sépare l'effet des inversions thermiques de l'effet du calendrier ouvré.",
-        findings: [],
+          "Exploration Atmo, jointure horaire avec la météo, proxy d'inversion (froid + vent faible), puis régression Ridge comparant blocs calendrier (heure, week-end, fériés) et météo, avec effets par station.",
+        findings: [
+          "157 000 heures jointes : la météo seule explique plus de variance que le calendrier (R² holdout ~0,19 vs ~0,15).",
+          "Proxy inversion (froid + vent < 2 m/s) : PM2.5 +62 % en moyenne vs les autres heures.",
+          "Corrélations : température −0,30, vent −0,17 ; double bosse horaire en semaine compatible avec le trafic, mais effet secondaire face à la météo.",
+        ],
         limits:
-          "Une corrélation ne vaut pas causalité. Sans données de trafic à la même granularité, l'activité humaine sera approchée par le calendrier, ce qui reste une approximation grossière à assumer dans les conclusions.",
+          "Corrélation ≠ causalité. Pas de trafic horaire : le calendrier reste un proxy grossier. ERA5 lisse les microclimats de vallée. Historique Atmo figé, pas un suivi temps réel. Modèle linéaire simple (R² ~0,20), pas une prévision opérationnelle.",
       },
       en: {
         title: "Air quality in Auvergne-Rhône-Alpes",
@@ -172,12 +180,16 @@ export const PROJECTS: Project[] = [
           "Separating what comes from the weather and what comes from human activity.",
         question:
           "Are fine particle peaks in the Rhône valley driven more by weather conditions than by human activity?",
-        data: "Hourly readings from Atmo Auvergne-Rhône-Alpes monitoring stations for PM10 and PM2.5, with failing sensors, stations added or retired mid-series, and unit conventions that change between years.",
+        data: "Hourly PM2.5 from 19 Rhône valley stations (Atmo AURA, fixed history Jul. 2022 → Jul. 2023), joined with Open-Meteo ERA5 temperature, wind and humidity at station coordinates.",
         method:
-          "Rebuilding a continuous series per station, handling missing values explicitly rather than dropping them, then a model that separates the effect of thermal inversions from the effect of the working calendar.",
-        findings: [],
+          "Atmo exploration, hourly join with weather, inversion proxy (cold + low wind), then Ridge regression comparing calendar blocks (hour, weekend, holidays) vs weather, with station fixed effects.",
+        findings: [
+          "~157k joined hours: weather alone explains more variance than the calendar (holdout R² ~0.19 vs ~0.15).",
+          "Inversion proxy (cold + wind < 2 m/s): PM2.5 +62% on average vs other hours.",
+          "Correlations: temperature −0.30, wind −0.17; weekday double peak compatible with traffic, but secondary to weather.",
+        ],
         limits:
-          "Correlation is not causation. Without traffic data at the same granularity, human activity is approximated by the calendar, which stays a coarse proxy that the conclusions must acknowledge.",
+          "Correlation is not causation. No hourly traffic data: calendar remains a coarse proxy. ERA5 smooths valley microclimates. Fixed Atmo history, not live monitoring. Simple linear model (R² ~0.20), not operational forecasting.",
       },
     },
   },
