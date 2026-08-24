@@ -143,9 +143,10 @@ export const PROJECTS: Project[] = [
     sources: [
       {
         label: "Atmo Auvergne-Rhône-Alpes",
-        url: "https://www.atmo-auvergnerhonealpes.fr/",
+        url: "https://depot.atmo-aura.fr/mesures/horaires/",
       },
     ],
+    repo: "https://github.com/Vakz0/qualite-air-aura",
     image: "/images/projet-air.webp",
     imageAlt: {
       fr: "Nappe de pollution piégée au-dessus d'une vallée industrielle en hiver",
