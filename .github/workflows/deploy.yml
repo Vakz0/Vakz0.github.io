@@ -32,9 +32,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Type check
-        run: npx tsc --noEmit
-
+      # next build vérifie les types lui-même. Un tsc séparé échouerait de toute
+      # façon : PageProps et LayoutProps sont générés pendant le build.
       - name: Build static export
         run: npm run build
 
