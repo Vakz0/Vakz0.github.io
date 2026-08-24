@@ -4,6 +4,7 @@ import "../globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Grain } from "@/components/Grain";
+import { PointerGlow } from "@/components/PointerGlow";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { getDictionary } from "@/content/i18n";
 import { LOCALES, SITE, type Locale } from "@/content/site";
@@ -57,10 +58,14 @@ export default async function LocaleLayout({
     >
       <body className="flex min-h-full flex-col font-sans">
         <ScrollProgress />
+        <PointerGlow />
         <Grain />
         <Header locale={typed} dict={dict} />
-        {children}
-        <Footer dict={dict} />
+        {/* Le contenu passe au-dessus du halo, qui reste au niveau du fond. */}
+        <div className="relative z-10 flex flex-1 flex-col">
+          {children}
+          <Footer dict={dict} />
+        </div>
       </body>
     </html>
   );

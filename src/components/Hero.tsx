@@ -2,40 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-} from "motion/react";
-import type { PointerEvent } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { MagneticLink } from "./MagneticLink";
 import type { Dictionary } from "@/content/i18n";
 import type { Locale } from "@/content/site";
 
 export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const reduce = useReducedMotion();
-
-  // Halo suivant le pointeur : il éclaire la zone lue, il ne décore pas.
-  // L'opacité part de zéro pour qu'aucun halo ne traîne dans un coin au chargement.
-  const pointerX = useMotionValue(0);
-  const pointerY = useMotionValue(0);
-  const glow = useMotionValue(0);
-  const glowOpacity = useSpring(glow, { stiffness: 140, damping: 28 });
-  const spotlight = useMotionTemplate`radial-gradient(520px circle at ${pointerX}px ${pointerY}px, rgba(61, 220, 151, 0.08), transparent 72%)`;
-
-  function trackPointer(event: PointerEvent<HTMLElement>) {
-    if (reduce) return;
-    const rect = event.currentTarget.getBoundingClientRect();
-    pointerX.set(event.clientX - rect.left);
-    pointerY.set(event.clientY - rect.top);
-    glow.set(1);
-  }
-
-  function fadeGlow() {
-    glow.set(0);
-  }
 
   const words = `${dict.hero.headlineTop} ${dict.hero.headlineBottom}`.split(" ");
   const breakAfter = dict.hero.headlineTop.split(" ").length - 1;
@@ -54,19 +27,7 @@ export function Hero({ locale, dict }: { locale: Locale; dict: Dictionary }) {
         };
 
   return (
-    <section
-      onPointerMove={trackPointer}
-      onPointerLeave={fadeGlow}
-      className="relative isolate grid min-h-[calc(100dvh-68px)] grid-cols-1 items-center gap-10 pt-14 pb-16 lg:grid-cols-12 lg:gap-14 lg:pt-20"
-    >
-      {!reduce && (
-        <motion.div
-          aria-hidden
-          style={{ background: spotlight, opacity: glowOpacity }}
-          className="pointer-events-none absolute inset-0 -z-10"
-        />
-      )}
-
+    <section className="grid min-h-[calc(100dvh-68px)] grid-cols-1 items-center gap-10 pt-14 pb-16 lg:grid-cols-12 lg:gap-14 lg:pt-20">
       <div className="lg:col-span-7">
         <motion.p
           {...enter(0)}

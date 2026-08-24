@@ -9,7 +9,8 @@ export function Footer({ dict }: { dict: Dictionary }) {
   ];
 
   return (
-    <footer id="contact" className="mt-auto border-t border-line bg-canvas-alt">
+    // Fond partiellement transparent pour laisser passer le halo du curseur.
+    <footer id="contact" className="mt-auto border-t border-line bg-canvas-alt/70">
       <div className="mx-auto max-w-[1400px] px-6 py-14 lg:px-10">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
