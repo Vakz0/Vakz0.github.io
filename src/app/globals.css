@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+/*
+  Direction "Terminal" : mode sombre unique, un seul accent, un seul rayon.
+  Curseurs de design retenus : VARIANCE 6 / MOTION 8 / DENSITY 6.
+*/
+:root {
+  color-scheme: dark;
+
+  --canvas: #0a0b0d;
+  --canvas-alt: #131519;
+  --canvas-raised: #181b21;
+  --line: #23262c;
+  --line-strong: #333840;
+  --fg: #e9ecef;
+  --fg-soft: #949ba6;
+  --accent: #3ddc97;
+  --accent-dim: #2bbd7e;
+
+  --radius: 0.375rem;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-alt: var(--canvas-alt);
+  --color-canvas-raised: var(--canvas-raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-accent: var(--accent);
+  --color-accent-dim: var(--accent-dim);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --radius-base: var(--radius);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--canvas);
+  color: var(--fg);
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--canvas);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/*
+  Les entrées au scroll partent d'une opacité nulle rendue côté serveur. Sans
+  JavaScript, rien ne les rallumerait : ce garde-fou rend le contenu lisible.
+*/
+@media (scripting: none) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/*
+  Grain fixe appliqué à un calque non interactif : jamais sur un conteneur qui
+  défile, sinon le GPU repeint en continu et le scroll s'effondre sur mobile.
+*/
+.grain-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
